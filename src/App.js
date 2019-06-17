@@ -22,6 +22,7 @@ class App extends React.Component {
     return (
         <div className="darkness">
           <div className="background">
+            <h1>rl filter</h1>
             <img className="imgs" src={this.state.imgUrl} alt="fancy img"></img>
             <div className="comment">
               <h2>{this.state.userName}</h2>

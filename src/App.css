@@ -55,6 +55,16 @@
 
 .background {
   background-color: saddlebrown;
+  color: orange;
+}
+
+.background h1 {
+  width: auto;
+  font-size: 5em;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-top: 2.5vh;
 }
 
 .comment {

@@ -1,0 +1,2 @@
+REACT_APP_TOKEN=get your own token!
+REACT_APP_CHANNEL=the slack channel ID you want

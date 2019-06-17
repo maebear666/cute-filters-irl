@@ -43,8 +43,7 @@ class App extends React.Component {
   }
 
   getLatestMsg(that) {
-    fetch(`https://slack.com/api/conversations.history?token=${TOKEN}
-        &channel=${CHANNEL}&limit=1`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
+    fetch(`https://slack.com/api/conversations.history?token=${TOKEN}&channel=${CHANNEL}&limit=1`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
       return response.json();
     })
         .then(function(myJson) {

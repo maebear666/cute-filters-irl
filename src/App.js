@@ -9,21 +9,32 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {imgUrl: "testPic.jpg",
+      token: TOKEN,
+      tempToken: "",
       userName: "jermm",
       userMsg: "yo yo yo"};
+    this.updateTempToken = this.updateTempToken.bind(this);
+    this.saveTempToken = this.saveTempToken.bind(this);
+
   }
 
   render() {
-    if (!TOKEN) {
+    if (!this.state.token) {
       return (
-          <p>lol sorry no token :(</p>
+          <div className="background noToken">
+            <p>sorry no token :(</p>
+            <p>got a token?</p>
+            <input value={this.state.tempToken} type="text" onChange={this.updateTempToken} />
+            <button onClick={this.saveTempToken}>SAVE IT!</button>
+          </div>
+
       )
     }
     return (
         <div className="darkness">
           <div className="background">
             <h1>rl filter</h1>
-            <img className="imgs" src={this.state.imgUrl} alt="fancy img"></img>
+            <img className="imgs" src={this.state.imgUrl} alt="fancy img"/>
             <div className="comment">
               <h2>{this.state.userName}</h2>
               <p>{this.state.userMsg}</p>
@@ -33,9 +44,20 @@ class App extends React.Component {
     );
   }
 
+  updateTempToken(event) {
+    this.setState({tempToken: event.target.value});
+  }
+
+  saveTempToken() {
+    let that = this;
+    this.setState({token: this.state.tempToken}, function () {
+      that.componentDidMount();
+    });
+  }
+
   componentDidMount() {
     let that = this;
-    if (TOKEN) {
+    if (this.state.token) {
       this.getLatestMsg(that);
       setInterval(function () {
         that.getLatestMsg(that)
@@ -44,11 +66,10 @@ class App extends React.Component {
   }
 
   getLatestMsg(that) {
-    fetch(`https://slack.com/api/conversations.history?token=${TOKEN}&channel=${CHANNEL}&limit=1`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
+    fetch(`https://slack.com/api/conversations.history?token=${that.state.token}&channel=${CHANNEL}&limit=1`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
       return response.json();
     })
         .then(function(myJson) {
-          console.log(JSON.stringify(myJson));
           let lastMsg = myJson.messages[0];
           if (lastMsg.files && lastMsg.files.length > 0) {
             that.setState({imgUrl: lastMsg.files[0].thumb_1024, userMsg: lastMsg.text});
@@ -58,7 +79,7 @@ class App extends React.Component {
   }
 
   getUserInfo(that, userStr) {
-    fetch(`https://slack.com/api/users.info?token=${TOKEN}&user=${userStr}`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
+    fetch(`https://slack.com/api/users.info?token=${that.state.token}&user=${userStr}`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
       return response.json();
     }).then(function (userInfo) {
       if (userInfo && userInfo.user && userInfo.user.profile) {

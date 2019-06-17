@@ -39,6 +39,7 @@ class App extends React.Component {
               <h2>{this.state.userName}</h2>
               <p>{this.state.userMsg}</p>
             </div>
+            <div className="mini"><a href="https://github.com/jermm/cute-filters-irl">github.com/jermm/cute-filters-irl</a></div>
           </div>
         </div>
     );

@@ -27,7 +27,6 @@ class App extends React.Component {
             <input value={this.state.tempToken} type="text" onChange={this.updateTempToken} />
             <button onClick={this.saveTempToken}>SAVE IT!</button>
           </div>
-
       )
     }
     return (
@@ -45,10 +44,17 @@ class App extends React.Component {
     );
   }
 
+  /**
+   * Input callback
+    * @param event
+   */
   updateTempToken(event) {
     this.setState({tempToken: event.target.value});
   }
 
+  /**
+   * Button callback
+   */
   saveTempToken() {
     let that = this;
     this.setState({token: this.state.tempToken}, function () {
@@ -66,6 +72,11 @@ class App extends React.Component {
     }
   }
 
+  /**
+   * Saves to state imgUrl, userMsg, then calls userInfo.
+   * Hits slack API
+   * @param that
+   */
   getLatestMsg(that) {
     fetch(`https://slack.com/api/conversations.history?token=${that.state.token}&channel=${CHANNEL}&limit=1`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
       return response.json();
@@ -79,6 +90,12 @@ class App extends React.Component {
         });
   }
 
+  /**
+   * Save to state user name.
+   * Hits slack API
+   * @param that
+   * @param userStr
+   */
   getUserInfo(that, userStr) {
     fetch(`https://slack.com/api/users.info?token=${that.state.token}&user=${userStr}`, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(function(response) {
       return response.json();
@@ -89,4 +106,5 @@ class App extends React.Component {
     })
   }
 }
+
 export default App;
